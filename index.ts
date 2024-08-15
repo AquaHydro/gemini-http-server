@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const cors = require('koa2-cors');
 const Router = require('koa-router');
 const errorHandler = require('./error-handle');
 
@@ -8,6 +9,7 @@ const app = new Koa();
 const router = new Router();
 
 app.on('error', errorHandler);
+app.use(cors());
 app.use(router.routes());
 
 // 文本生成
