@@ -18,6 +18,9 @@ router.get('/plaintext', GeminiController.generateContent);
 // web页面摘要生成
 router.get('/summarize', GeminiController.summarizePage);
 
+// web页面摘要生成（流）
+router.get('/summarize/stream', GeminiController.summarizePageStream);
+
 const PORT = 3000;
 
 app.listen(PORT, () => {
