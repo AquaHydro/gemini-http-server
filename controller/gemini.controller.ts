@@ -53,6 +53,7 @@ class GeminiController {
       'Content-Type': 'text/event-stream',
     });
     ctx.body = summaryStream;
+    ctx.status = 200;
     summarizeService.summarizePageStream(text, summaryStream);
   }
 
