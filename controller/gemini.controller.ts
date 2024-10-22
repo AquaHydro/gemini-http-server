@@ -1,11 +1,18 @@
 import Koa from 'koa';
 import axios from 'axios';
 import { PassThrough } from 'stream';
+import TurndownService from 'turndown';
 import errorTypes from '../constants/error-types';
 import summarizeService from '../services/summarize.service';
 import contentService from '../services/content.service';
 
 class GeminiController {
+  private turndownService: TurndownService;
+
+  constructor() {
+    this.turndownService = new TurndownService();
+  }
+
   async summarizePage(ctx: Koa.Context, next: Koa.Next) {
     const url = ctx.query.url;
 
@@ -22,9 +29,10 @@ class GeminiController {
           const error = new Error(errorTypes.HTTP_ERROR);
           return ctx.app.emit('error', error, ctx);
         })) + '';
-    const text = html.replace(/<[^>]*>/g, '');
 
-    ctx.body = await summarizeService.summarizePage(text);
+    const markdown = this.turndownService.turndown(html);
+
+    ctx.body = await summarizeService.summarizePage(markdown);
   }
 
   async summarizePageStream(ctx: Koa.Context, next: Koa.Next) {
@@ -44,7 +52,7 @@ class GeminiController {
           return ctx.app.emit('error', error, ctx);
         })) + '';
 
-    const text = html.replace(/<[^>]*>/g, '');
+    const markdown = this.turndownService.turndown(html);
     const summaryStream = new PassThrough();
 
     ctx.set({
@@ -54,7 +62,7 @@ class GeminiController {
     });
     ctx.body = summaryStream;
     ctx.status = 200;
-    summarizeService.summarizePageStream(text, summaryStream);
+    summarizeService.summarizePageStream(markdown, summaryStream);
   }
 
   async generateContent(ctx: Koa.Context, next: Koa.Next) {
