@@ -2,8 +2,9 @@ import { PassThrough } from 'stream';
 import model from '../model';
 
 class SummarizeService {
+  static prompt = '请使用简体中文为以下内容生成简短的概述,不要使用markdown格式,有富文本请使用html格式进行输出,300字以内：';
   async summarizePage(text: string) {
-    const prompt = `请使用简体中文为以下内容生成简短的概述,300字以内：${text}`;
+    const prompt = `${SummarizeService.prompt}${text}`;
     // 生成摘要
     const summary = await model.generateContent(prompt);
     const response = await summary.response;
@@ -12,7 +13,7 @@ class SummarizeService {
   }
 
   async summarizePageStream(text: string, stream: PassThrough) {
-    const prompt = `请使用简体中文为以下内容生成简短的概述, 300字以内：${text}`;
+    const prompt = `${SummarizeService.prompt}${text}`;
 
     const summaryGenerator = await model.generateContentStream(prompt);
     console.log('summaryGenerator', summaryGenerator);
