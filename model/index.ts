@@ -5,6 +5,6 @@ dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.Gemini_Key);
 
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-thinking-exp' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
 export default model;
