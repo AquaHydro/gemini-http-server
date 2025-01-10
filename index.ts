@@ -12,7 +12,7 @@ const router = new Router();
 app.on('error', errorHandler);
 app.use(cors({
   origin: (ctx: Context) => {
-    const allowedOrigins = ['https://www.ilikestudy.cn', 'https://blog.yiliang.me'];
+    const allowedOrigins = ['https://www.ilikestudy.cn', 'https://blog.yiliang.me', 'https://gemini.ilikestudy.cn'];
     if (allowedOrigins.includes(ctx.request.header.origin || '')) {
       return ctx.request.header.origin;
     }
