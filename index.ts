@@ -3,6 +3,7 @@ const cors = require('koa2-cors');
 const Router = require('koa-router');
 const errorHandler = require('./error-handle');
 
+import type Context from 'koa';
 import GeminiController from './controller/gemini.controller';
 
 const app = new Koa();
@@ -10,9 +11,9 @@ const router = new Router();
 
 app.on('error', errorHandler);
 app.use(cors({
-  origin: (ctx: Koa.Context) => {
+  origin: (ctx: Context) => {
     const allowedOrigins = ['https://www.ilikestudy.cn', 'https://blog.yiliang.me'];
-    if (allowedOrigins.includes(ctx.request.header.origin)) {
+    if (allowedOrigins.includes(ctx.request.header.origin || '')) {
       return ctx.request.header.origin;
     }
     return false; // Disallow other origins
