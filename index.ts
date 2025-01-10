@@ -10,7 +10,7 @@ const router = new Router();
 
 app.on('error', errorHandler);
 app.use(cors({
-  origin: (ctx) => {
+  origin: (ctx: Koa.Context) => {
     const allowedOrigins = ['https://www.ilikestudy.cn', 'https://blog.yiliang.me'];
     if (allowedOrigins.includes(ctx.request.header.origin)) {
       return ctx.request.header.origin;
