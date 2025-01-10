@@ -9,7 +9,17 @@ const app = new Koa();
 const router = new Router();
 
 app.on('error', errorHandler);
-app.use(cors());
+app.use(cors({
+  origin: (ctx) => {
+    const allowedOrigins = ['https://www.ilikestudy.cn', 'https://blog.yiliang.me'];
+    if (allowedOrigins.includes(ctx.request.header.origin)) {
+      return ctx.request.header.origin;
+    }
+    return false; // Disallow other origins
+  },
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}));
 app.use(router.routes());
 
 // 文本生成
